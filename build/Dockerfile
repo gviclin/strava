@@ -12,7 +12,6 @@ COPY . /app
 WORKDIR /app/stravaProject/
 EXPOSE 8000
 
-
 #CMD ["django-admin", "startproject", "stravaProject"]
 #CMD ["python3", "stravaProject/manage.py", "startapp", "stravaApp"]
 
