@@ -1,1 +1,1 @@
-# strava_dev
+# strava connector
