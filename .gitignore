@@ -1,2 +1,2 @@
 # ignore database
-./stravaProject/db.sqlite3
+stravaProject/db.sqlite3
