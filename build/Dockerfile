@@ -7,13 +7,13 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 
 #copy project code
-COPY . /app 
+#COPY ./stravaProject /app 
 
-WORKDIR /app/stravaProject/
+WORKDIR /app
 EXPOSE 8000
 
 #CMD ["django-admin", "startproject", "stravaProject"]
 #CMD ["python3", "stravaProject/manage.py", "startapp", "stravaApp"]
 
-ENTRYPOINT ["python3"] 
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+#ENTRYPOINT ["python3"] 
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
