@@ -6,6 +6,9 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 
+RUN groupadd -r user && useradd -r -g user user
+USER user
+
 #copy project code
 #COPY ./stravaProject /app 
 
