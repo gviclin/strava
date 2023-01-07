@@ -10,4 +10,7 @@
  
  docker-compose up -d
  
-docker-compose run -rm django /bin/bash
+docker-compose run --rm django /bin/bash
+
+docker-compose run --rm django "python3 manage.py migrate"
+
