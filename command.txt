@@ -12,5 +12,11 @@
  
 docker-compose run --rm django /bin/bash
 
-docker-compose run --rm django "python3 manage.py migrate"
+python3 manage.py migrate
+
+python3 manage.py makemigrations stravaApp
+
+python manage.py createsuperuser
+
+
 

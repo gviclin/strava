@@ -1,0 +1,525 @@
+{% load static %}
+
+<html>
+	<style>
+
+	</style>
+    <head>
+		<html lang="en">
+	    <title>Statistics</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">		
+		<link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>				
+        <!--link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"-->
+        <!--link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"-->		
+		<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"-->
+		 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{% static 'css/strava.css' %}">
+		<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    </head>
+	<body>
+	
+	<!-- navbar-->
+	<div class="navbar">
+	  <a id="monthLink">By month</a>
+	  <a id="weekLink">By week</a>
+	  <a id="yearLink">Year progression</a>
+	  <div class="dropdown" style="float:right;">
+		<button class="dropbtn" id="loginLink">{% autoescape off %}{{name}}{% endautoescape %}
+		</button>
+		<div class="dropdown-content">
+		  <a href="{% url 'viewSettingPost' %}"id="settingLink">Settings</a>
+		  <a id="refreshLink">Refresh all</a>
+		  <a id="deleteLink">Delete all</a>
+		  <a id="logoutLink">Logout</a>
+		</div>
+	  </div> 
+	</div>
+
+	<!-- checkbox list-->
+	<section>
+	<div class="typeClass">
+		<label  style="word-wrap:break-word">
+			<input id="run"  type="checkbox" value="Run" />Run
+		</label>
+		<label  style="word-wrap:break-word">
+			<input id="ride"  type="checkbox" value="Ride" />Ride
+		</label>
+		<label  style="word-wrap:break-word">
+			<input id="walk"  type="checkbox" value="Walk" />Walk
+		</label>
+	</div>			
+	</section>
+	
+	<section>
+	<div class="typeClass">
+		<label  style="word-wrap:break-word">
+			<input id="distance"  type="checkbox" value="Distance" />Distance (km)
+		</label>
+		<label  style="word-wrap:break-word">
+			<input id="time"  type="checkbox" value="Time" />Time
+		</label>
+		<label  style="word-wrap:break-word">
+			<input id="elevation"  type="checkbox" value="Elevation" />Elevation (m)
+		</label>
+	</div>			
+	</section>
+	
+	<!-- The Modal -->
+	<div id="myModal" class="modal">
+
+		<!-- Modal content -->
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			
+			<div align="center">
+				<div style="padding:10px; border:1px solid #e7e7e7;width:270px;
+					background-color:#ffffff;" align="left">
+					<div style="margin-bottom:10px;margin-top:15px; text-align:center;font-size:22px; font-weight:100; color:#333333;">Strava sync</div>
+					<div style="padding-bottom:20px; border-bottom:1px solid #e7e7e7;">
+					</div>
+
+					<div style="margin-bottom:10px;margin-top:15px;">Activities</div>
+					<div style="padding-bottom:20px; border-bottom:1px solid #e7e7e7;">
+						<div class="progressbarclass" id = "progressbar-1"></div>
+						<div style="display:inline-block;"><span class="pourcent" id="p1" pourcent="70">1</span>
+							<span id="fp1" style="color:#cb2025;">%</span>
+						</div>
+					</div>
+					<div style="margin-bottom:10px;margin-top:15px;">Compute database</div>
+					<div style="padding-bottom:20px; border-bottom:1px solid #e7e7e7;">
+						<div class="progressbarclass" id = "progressbar-2"></div>
+						<div style="display:inline-block;"><span class="pourcent" id="p2" pourcent="100">1</span>
+							<span id="fp2" style="color:#cb2025;">%</span>
+						</div>
+					</div>	
+				</div>
+			</div>
+			
+			
+		</div>
+
+	</div>
+	
+
+	
+	<p>{{html}}</p>
+	
+	<!--section>
+		<div class="log">
+		<p id="testgv">{{html}}</p>
+		</div>
+	</section-->
+
+	<section>
+		<div class="content" id="id_content">
+			{% block content %}
+			{% endblock %}
+			
+			var myPlot = document.getElementById('id_content'),  
+
+			
+
+			myPlot.on('plotly_click', function(){
+				alert('You clicked this Plotly chart!');
+			});
+		</div>
+	</section>
+		
+	</body>
+
+</html>
+
+<script type='text/javascript'>	
+	
+	var modal = document.getElementById("myModal");
+
+ $(document).ready(function() {
+	var source;		
+
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+	  modal.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	/*window.onclick = function(event) {
+	  if (event.target == modal) {
+		modal.style.display = "none";
+	  }
+	}*/
+	//setTimeout( closeEvent, 5000 ); 
+
+
+	// Store the page type
+{% if actif == 1 %}sessionStorage.setItem("pageType", "month");{% endif %}
+{% if actif == 2 %}sessionStorage.setItem("pageType", "year");{% endif %}
+{% if actif == 3 %}sessionStorage.setItem("pageType", "login");{% endif %}	
+{% if actif == 4 %}sessionStorage.setItem("pageType", "week");{% endif %}
+{% if isLogged %} 
+sessionStorage.setItem("isLogged", "1");
+{% else %}
+sessionStorage.setItem("isLogged", "0");
+{% endif %}	
+
+	updateMenu();
+	
+	$("#run").prop("checked", true);
+	$("#distance").prop("checked", true);
+	
+	if (sessionStorage.getItem("pageType") != "login" &&
+		sessionStorage.getItem("pageType") != "refresh" &&
+		sessionStorage.getItem("pageType") != "delete") {
+		if (isLogged()) {
+			syncStrava();
+		}
+	}
+ 
+ 	$("#monthLink").click(function(){
+		sessionStorage.setItem("pageType", "month");
+		sendPostMessage();
+		//updateMenu();
+	});
+	
+	$("#weekLink").click(function(){
+		sessionStorage.setItem("pageType", "week");
+		sendPostMessage();
+		//updateMenu();
+	});
+	
+	$("#yearLink").click(function(){
+		sessionStorage.setItem("pageType", "year");
+		sendPostMessage();	
+		//updateMenu();
+	});
+	
+	$("#loginLink").click(function(){
+		if (!isLogged()) {
+			sessionStorage.setItem("pageType", "login");
+			
+			// callback link from strava depends on DEV / PROD mode 
+			{% if  dev %}
+			window.location.href = "http://www.strava.com/oauth/authorize?client_id=9402&response_type=code&redirect_uri=http://127.0.0.1:44/login/&approval_prompt=auto&scope=read_all,profile:read_all,activity:read_all";
+			{% else %}
+			window.location.href = "http://www.strava.com/oauth/authorize?client_id=9402&response_type=code&redirect_uri=http://mypersonalstat.ddns.net/login/&approval_prompt=auto&scope=read_all,profile:read_all,activity:read_all";
+			{% endif %}	
+		}
+		else
+		{
+			console.log("already logged !!!!");
+		}
+	});
+	
+	$("#refreshLink").click(function(){		
+		if (isLogged()) {
+			sessionStorage.setItem("pageType", "refresh");
+			sendPostMessage();	
+		}	
+	});
+	
+	$("#deleteLink").click(function(){		
+	if (isLogged()) {
+		sessionStorage.setItem("pageType", "delete");
+		sendPostMessage();	
+	}	
+});
+	
+	$("#logoutLink").click(function(){
+		sessionStorage.setItem("pageType", "logout");
+		sessionStorage.setItem("isLogged", "0");
+		sendPostMessage();	
+	});
+ 
+	$("#run").change(function(){
+			$("#ride").prop("checked", false);
+			$("#walk").prop("checked", false);
+			sendPostMessage();
+	});
+
+	$("#ride").change(function(){
+			$("#run").prop("checked", false);
+			$("#walk").prop("checked", false);
+			sendPostMessage();
+	});
+	
+	$("#walk").change(function(){
+			$("#run").prop("checked", false);
+			$("#ride").prop("checked", false);
+			sendPostMessage();
+	});
+	
+	$("#distance").change(function(){
+			$("#time").prop("checked", false);
+			$("#elevation").prop("checked", false);
+			sendPostMessage();
+	});
+	
+	$("#time").change(function(){
+			$("#distance").prop("checked", false);
+			$("#elevation").prop("checked", false);
+			sendPostMessage();
+	});
+	
+	$("#elevation").change(function(){
+			$("#distance").prop("checked", false);
+			$("#time").prop("checked", false);
+			sendPostMessage();
+	});
+
+ });
+ 
+function GetActivityType() {
+	type=[];
+	if ($('#run').is(":checked")) {
+		type.push("run")
+	}
+	if ($('#ride').is(":checked")) {
+		type.push("ride")		
+	}
+	if ($('#walk').is(":checked")) {
+		type.push("walk")		
+	}
+	return type
+}
+
+function GetDataType() {
+	type=[];
+	if ($('#distance').is(":checked")) {
+		type.push("distance")
+	}
+	if ($('#time').is(":checked")) {
+		type.push("time")		
+	}
+	if ($('#elevation').is(":checked")) {
+		type.push("elevation")		
+	}
+	return type
+}
+
+function isLogged() {
+	if (sessionStorage.getItem("isLogged") == 1) 
+		return true;	
+	else
+		return false;
+}
+
+
+ 
+function sendPostMessage() {
+	activityType = GetActivityType();
+	dataType = GetDataType();
+	pageType = sessionStorage.getItem("pageType");
+	// make POST ajax call
+	$('html, body').css("cursor", "wait");
+	//console.log(" sendPostMessage : " + " pageType=" + pageType);
+	
+	$.ajax({
+		type: 'POST',
+		url: "{% url 'post_ajax' %}",
+		data: "activityType=" + activityType + "&pageType=" + pageType + "&dataType=" + dataType,
+		
+		error: function (request, status, error) {
+			console.log(" ajax ko : " + request.status);
+			sessionStorage.setItem("isLogged", "0");
+			updateMenu();
+		},
+		
+		success: function (response) {
+			//alert("ajax ok");	
+			log1 = response["log"]
+			data = response["data"]
+			console.log(" ajax ok : " + log1)
+	
+			$("#testgv").text(function(i, origText){
+			return log1; 
+			});
+			
+			$('html, body').css("cursor", "auto");
+			
+			if (sessionStorage.getItem("pageType") == "refresh" ) {
+				syncStrava();
+			}
+			else if (sessionStorage.getItem("pageType") == "delete" ) {
+				//$('#settingLink').trigger('click');
+				$("#settingLink")[0].click();
+			}
+			else /*if (sessionStorage.getItem("pageType") != "login" )*/{
+				$("#id_content").html(data);
+				///document.getElementById("id_content").innerHTML = data; // dont work !!!
+			}
+			
+			updateMenu();
+		}
+	})
+
+  return;
+}
+
+
+function updateMenu() {
+	if (sessionStorage.getItem("pageType") == "month")
+	{
+		$('#monthLink').css('background-color', '#858585');
+		$('#weekLink').css('background-color', '#222');
+		$('#yearLink').css('background-color', '#222');
+		$('#loginLink').css('background-color', '#222');
+		$('.typeClass').show();
+	}
+	else if (sessionStorage.getItem("pageType") == "week")
+	{
+		$('#weekLink').css('background-color', '#858585');
+		$('#yearLink').css('background-color', '#222');
+		$('#monthLink').css('background-color', '#222');
+		$('#loginLink').css('background-color', '#222');
+		$('.typeClass').show();
+	}
+	else if (sessionStorage.getItem("pageType") == "year")
+	{
+		$('#yearLink').css('background-color', '#858585');
+		$('#weekLink').css('background-color', '#222');
+		$('#monthLink').css('background-color', '#222');
+		$('#loginLink').css('background-color', '#222');
+		$('.typeClass').show();
+	}
+	else if (sessionStorage.getItem("pageType") == "login" ||
+				sessionStorage.getItem("pageType") == "refresh" ||
+				sessionStorage.getItem("pageType") == "delete" )
+	{
+		$('#loginLink').css('background-color', '#858585');
+		$('#weekLink').css('background-color', '#222');
+		$('#monthLink').css('background-color', '#222');
+		$('#yearLink').css('background-color', '#222');
+		$('.typeClass').hide();	
+	}
+
+	if (isLogged())
+	{
+		//console.log("====> Logged ")
+		//$('#loginLink').html("Gael Viclin " +  "<i class=\"fa fa-caret-down\"></i>");
+		$('.dropdown').hover(
+			  function() {
+				$('.dropdown-content').css("display", "block");
+			}, function() {
+				$('.dropdown-content').css("display", "none");
+			}
+		);
+		//deactivate login button
+		$('.dropbtn').css( 'cursor', 'default');
+	}
+	else
+	{		
+		//console.log("====> Not logged ")
+		$('#loginLink').html("Login ");
+		$('.dropdown').hover(
+			  function() {
+				$('.dropdown-content').css("display", "none");
+			}, function() {
+				$('.dropdown-content').css("display", "none");
+			}
+		);
+		//activate login button
+		$('.dropbtn').css( 'cursor', 'pointer');
+		$('.typeClass').hide();	
+	}
+}
+
+function startEventListening() {	
+	if(typeof(EventSource) !== "undefined") {		
+		//console.log("startEventListening")
+		
+		// Init values
+		$("#progressbar-1" ).progressbar({
+			value: 0,
+			max:100
+		});
+		$("#p1").html(0);
+
+		$( "#progressbar-2" ).progressbar({
+			value: 0
+			});
+		$( "#p2" ).html(0);
+		
+		source = new EventSource("{% url 'viewStravaSync' %}");
+		
+		source.onmessage = function(event) {
+			var dict = JSON.parse(event.data)
+			result = dict["result"]
+			progressValueActivities = dict["progressValueActivities"]
+			progressValueCompute = dict["progressValueCompute"]
+
+			progress(progressValueActivities, progressValueCompute);
+			
+		};
+		
+		source.onopen = function(event) {
+			console.log("onopen : Server side event connected to server !")
+		};
+		
+		source.onerror = function(event) {
+			console.log("onerror : Server side event connected to server !")
+			if (event.readyState == EventSource.CLOSED) {
+				console.log('onerror : closed');
+			}
+		};
+	} else {
+		document.getElementById("ss").innerHTML = "Sorry, your browser does not support server-sent events...";
+	}
+}
+
+	
+function closeEvent() {
+	console.log("closeEvent : Server side event disconnected from server !")
+	source.close();
+
+}
+
+function progress(progressValueActivities, progressValueComput) {
+	var progressbar1 = $( "#progressbar-1" );
+	var progressbar2 = $( "#progressbar-2" );
+
+	console.log("progressValueActivities value : " + progressValueActivities)
+	progressbar1.progressbar( "value", progressValueActivities);
+	$( "#p1" ).html(progressValueActivities);
+	if ( progressValueActivities >= 100 ) {
+		progressbar1.progressbar( "value", 100);
+		$( "#p1" ).html(100);
+	}
+	
+	console.log("progressValueComput value : " + progressValueComput)
+	progressbar2.progressbar( "value", progressValueComput);
+	$( "#p2" ).html(progressValueComput);
+	if ( progressValueComput >= 100 ) {
+		progressbar2.progressbar( "value", 100);
+		$( "#p2" ).html(100);
+		closeEvent();
+		function hide() {
+			if (sessionStorage.getItem("pageType") != "refresh") {
+				sendPostMessage();
+			}
+			else
+			{	$("#settingLink")[0].click();
+				//sessionStorage.setItem("pageType", "month");
+				//updateMenu();
+				//sendPostMessage();
+			}
+			modal.style.display = "none";
+		}
+		setTimeout( hide, 1800 ); 		
+	}
+}
+
+function syncStrava() {
+	modal.style.display = "block";
+	startEventListening();
+}
+
+	
+	
+ </script>

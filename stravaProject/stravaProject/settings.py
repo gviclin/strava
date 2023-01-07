@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 import sys
+#import environ
 from pathlib import Path
+
+# Initialise environment variables
+#env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,4 +131,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-#sys.path.insert(0, '/app/stravaApp/')
+sys.path.insert(0, '/app/stravaio')

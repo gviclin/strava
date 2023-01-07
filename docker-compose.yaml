@@ -7,5 +7,7 @@ services:
       - ./stravaProject:/app
     ports:
       - "44:8000"
+    environment:
+    - DEV=true
       
 

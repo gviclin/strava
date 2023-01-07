@@ -18,5 +18,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+ #   path('', views.index, name='index'),
+    path('login/', 					views.viewLogin,	name='viewLogin'),
+    path('post_ajax/', 				views.post_ajax,	name='post_ajax'),
+    path('sync_ajax/', 				views.sync_ajax,	name='sync_ajax'),
+    path('stravaSync/',				views.viewStravaSync, 	name='viewStravaSync'),
+    path('^setting/$', 				views.viewSettingPost,	name='viewSettingPost'),
+    path('', 								views.index, name='#'),
 ]

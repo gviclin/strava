@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include,path
 
 urlpatterns = [
-	path('strava/', include('stravaApp.urls')),
+#	path('strava/', include('stravaApp.urls')),
+    path('', include('stravaApp.urls')),
     path('admin/', admin.site.urls),
 ]

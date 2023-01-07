@@ -1,0 +1,28 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+ipython = "*"
+pytest = "*"
+python-dotenv = "*"
+vcrpy = "*"
+pylint = "*"
+rope = "*"
+twine = "*"
+jupyter = "*"
+plotly = "*"
+stravaio = {editable = true,path = "."}
+
+[packages]
+logme = "*"
+maya = "*"
+pandas = "*"
+urllib3 = "*"
+certifi = "*"
+loguru = "*"
+requests = "*"
+
+[requires]
+python_version = "3.7"

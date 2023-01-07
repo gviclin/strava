@@ -1,2 +1,3 @@
-# ignore database
-stravaProject/db.sqlite3
+# ignore databases
+*db.sqlite3
+*.parquet
