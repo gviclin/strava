@@ -1,0 +1,13 @@
+ #### DJANGO ####
+ 
+ docker build -t gvi/django:1.0 .
+ 
+ docker run -it -v ~/docker/django:/app -p 44:8000 --name=django gvi/django:1.0 
+ 
+ docker exec -it django /bin/bash
+ 
+ docker-compose build
+ 
+ docker-compose up -d
+ 
+docker-compose run -rm django /bin/bash
