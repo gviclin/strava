@@ -1,0 +1,29 @@
+version: '3'
+services:
+  django:
+    build: ./buildProd
+    networks:
+      myhome:
+        ipv4_address: 172.44.0.13
+    volumes:
+      - ./stravaProject:/app
+    ports:
+      - "44:8000"
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=myhome"
+    - "traefik.http.routers.influxdb.rule=Host(`strava.mypersonalstats.duckdns.org`)"
+    - "traefik.http.routers.influxdb.entrypoints=https"
+    - "traefik.http.routers.influxdb.tls=true"
+    - "traefik.http.routers.influxdb.tls.certresolver=gviclin"
+    - "traefik.http.services.influxdb.loadbalancer.server.port=44"
+    
+networks:
+  myhome:
+      driver: bridge
+      external: false
+      ipam:
+       config:
+         - subnet: 172.44.0.0/16
+           gateway: 172.44.0.1
+

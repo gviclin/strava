@@ -55,6 +55,7 @@ class Statist():
 		#self.logger.debug(activities_dir)
 		i = 0
 		listAct = []
+		self.logger.debug("Activities numbers : " + str(len(list_activities)))
 		for a in list_activities:
 			file_data = a.to_dict()
 			#logger.debug("file_data" + str(file_data))
@@ -114,8 +115,8 @@ class Statist():
 			#add year / month columns
 			newDf['year'] = pd.DatetimeIndex(newDf['start_date']).year
 			newDf['month'] = pd.DatetimeIndex(newDf['start_date']).month
-#			newDf['week'] = pd.DatetimeIndex(newDf['start_date']).week
-			newDf['week'] = pd.DatetimeIndex(newDf['start_date']).isocalendar().week
+			newDf['week'] = pd.DatetimeIndex(newDf['start_date']).week
+#			newDf['week'] = pd.DatetimeIndex(newDf['start_date']).isocalendar().week
 			
 			#newDf['month'] = newDf['month'].apply(str)
 			#newDf['year'] = newDf['year'].apply(str)

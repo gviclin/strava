@@ -23,6 +23,6 @@ urlpatterns = [
     path('post_ajax/', 				views.post_ajax,	name='post_ajax'),
     path('sync_ajax/', 				views.sync_ajax,	name='sync_ajax'),
     path('stravaSync/',				views.viewStravaSync, 	name='viewStravaSync'),
-    path('^setting/$', 				views.viewSettingPost,	name='viewSettingPost'),
-    path('', 								views.index, name='#'),
+    path('setting/$', 				views.viewSettingPost,	name='viewSettingPost'),
+    path('', 						views.index, name='#'),
 ]
