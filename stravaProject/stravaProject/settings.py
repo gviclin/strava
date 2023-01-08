@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-h5#(f%-=**lzzzw2+#_23y7fl)4rgbyn^m_5#7=#bri(q_49d+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['strava.mypersonalstats.duckdns.org', '127.0.0.1', '192.1.168.*']
+ALLOWED_HOSTS = ['strava.mypersonalstats.duckdns.org', '127.0.0.1', '192.168.1.31']
 
 
 # Application definition
